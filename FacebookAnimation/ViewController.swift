@@ -19,22 +19,29 @@ class ViewController: UIViewController {
     let containerView = UIView()
     containerView.backgroundColor = .white
     
-    let redView = UIView()
-    redView.backgroundColor = .red
-    let blueView = UIView()
-    blueView.backgroundColor = .blue
+    let arrangedSubviews = [UIColor.blue, .red, .orange, .gray, .brown, .green].map({ color -> UIView in
+      let view = UIView()
+      view.backgroundColor = color
+      return view
+    })
     
-    let arrangedSubviews = [redView, blueView]
-    let padding: CGFloat = 8
     let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
     stackView.distribution = .fillEqually
+    
+    //configurations
+    let padding: CGFloat = 8
+    let iconHeight: CGFloat = 50
+    let numberOfIcons: CGFloat = CGFloat(arrangedSubviews.count)
+    let containerViewHeight = iconHeight + 2 * padding
+    let containerViewWidth = numberOfIcons * iconHeight + (numberOfIcons + 1) * padding
+    
     stackView.spacing = padding
     stackView.layoutMargins = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
     stackView.isLayoutMarginsRelativeArrangement = true
     
     containerView.addSubview(stackView)
     
-    containerView.frame = CGRect(x: 0, y: 0, width: 200, height: 100)
+    containerView.frame = CGRect(x: 0, y: 0, width: containerViewWidth, height: containerViewHeight)
     stackView.frame = containerView.frame
     return containerView
   }()
