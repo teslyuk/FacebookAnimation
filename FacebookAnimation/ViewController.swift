@@ -86,7 +86,7 @@ class ViewController: UIViewController {
     case .began:
       handleGestureBegan(gestureRecognizer: gestureRecognizer)
     case .ended:
-      iconsContainerView.removeFromSuperview()
+      handleGestureEnded(gestureRecognizer: gestureRecognizer)
     case .changed:
       handleGestureChanged(gestureRecognizer: gestureRecognizer)
     case .cancelled, .failed, .possible:
@@ -94,10 +94,6 @@ class ViewController: UIViewController {
     @unknown default:
       fatalError()
     }
-  }
-  
-  private func handleGestureChanged(gestureRecognizer: UILongPressGestureRecognizer) {
-    
   }
   
   private func handleGestureBegan(gestureRecognizer: UILongPressGestureRecognizer) {
@@ -114,6 +110,36 @@ class ViewController: UIViewController {
       self.iconsContainerView.alpha = 1
       self.iconsContainerView.transform = CGAffineTransform(translationX: centeredX, y: pressedLocation.y - self.iconsContainerView.frame.height)
     })
+  }
+  
+  private func handleGestureChanged(gestureRecognizer: UILongPressGestureRecognizer) {
+    let pressedLocation = gestureRecognizer.location(in: iconsContainerView)
+    
+    let fixedYLocation = CGPoint(x: pressedLocation.x, y: iconsContainerView.frame.height / 2)
+    
+    let hitTestView = iconsContainerView.hitTest(fixedYLocation, with: nil)
+    
+    if hitTestView is UIImageView {
+      UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+        
+        let stackView = self.iconsContainerView.subviews.first
+        stackView?.subviews.forEach { $0.transform = .identity }
+        
+        hitTestView?.transform = CGAffineTransform(translationX: 0, y: -50)
+      })
+    }
+  }
+  
+  private func handleGestureEnded(gestureRecognizer: UILongPressGestureRecognizer) {
+    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+      let stackView = self.iconsContainerView.subviews.first
+      stackView?.subviews.forEach { $0.transform = .identity }
+      
+      self.iconsContainerView.transform = self.iconsContainerView.transform.translatedBy(x: 0, y: self.iconsContainerView.frame.height)
+      self.iconsContainerView.alpha = 0
+    }) { _ in
+      self.iconsContainerView.removeFromSuperview()
+    }
   }
   
   override var prefersStatusBarHidden: Bool {
