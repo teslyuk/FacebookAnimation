@@ -9,12 +9,24 @@
 import UIKit
 
 class ViewController: UIViewController {
+  
+  let backgroundImageView: UIImageView = {
+    let imageView = UIImageView(image: #imageLiteral(resourceName: "fb_core_data_bg.jpg"))
+    return imageView
+  }()
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view.
+    addBackgroundImageView()
   }
 
-
+  private func addBackgroundImageView() {
+    backgroundImageView.frame = view.frame
+    view.addSubview(backgroundImageView)
+  }
+  
+  override var prefersStatusBarHidden: Bool {
+    return true
+  }
 }
 
