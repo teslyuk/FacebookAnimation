@@ -17,25 +17,37 @@ class ViewController: UIViewController {
   
   let iconsContainerView: UIView = {
     let containerView = UIView()
+    containerView.backgroundColor = .white
+    
+    let redView = UIView()
+    redView.backgroundColor = .red
+    let blueView = UIView()
+    blueView.backgroundColor = .blue
+    
+    let arrangedSubviews = [redView, blueView]
+    let padding: CGFloat = 8
+    let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
+    stackView.distribution = .fillEqually
+    stackView.spacing = padding
+    stackView.layoutMargins = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+    stackView.isLayoutMarginsRelativeArrangement = true
+    
+    containerView.addSubview(stackView)
+    
     containerView.frame = CGRect(x: 0, y: 0, width: 200, height: 100)
-    containerView.backgroundColor = .red
+    stackView.frame = containerView.frame
     return containerView
   }()
 
   override func viewDidLoad() {
     super.viewDidLoad()
     addBackgroundImageView()
-    addIconsContainerView()
     setupLongPressGesture()
   }
 
   private func addBackgroundImageView() {
     backgroundImageView.frame = view.frame
     view.addSubview(backgroundImageView)
-  }
-  
-  private func addIconsContainerView() {
-    
   }
   
   private func setupLongPressGesture() {
