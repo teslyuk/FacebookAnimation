@@ -34,6 +34,7 @@ class ViewController: UIViewController {
     let arrangedSubviews = iconImages.map({ image -> UIView in
       let imageView = UIImageView(image: image)
       imageView.layer.cornerRadius = iconHeight / 2
+      imageView.isUserInteractionEnabled = true
       return imageView
     })
     
@@ -86,11 +87,17 @@ class ViewController: UIViewController {
       handleGestureBegan(gestureRecognizer: gestureRecognizer)
     case .ended:
       iconsContainerView.removeFromSuperview()
-    case .cancelled, .changed, .failed, .possible:
+    case .changed:
+      handleGestureChanged(gestureRecognizer: gestureRecognizer)
+    case .cancelled, .failed, .possible:
       break
     @unknown default:
       fatalError()
     }
+  }
+  
+  private func handleGestureChanged(gestureRecognizer: UILongPressGestureRecognizer) {
+    
   }
   
   private func handleGestureBegan(gestureRecognizer: UILongPressGestureRecognizer) {
