@@ -19,18 +19,28 @@ class ViewController: UIViewController {
     let containerView = UIView()
     containerView.backgroundColor = .white
     
-    let arrangedSubviews = [UIColor.blue, .red, .orange, .gray, .brown, .green].map({ color -> UIView in
-      let view = UIView()
-      view.backgroundColor = color
-      return view
+    let padding: CGFloat = 6
+    let iconHeight: CGFloat = 38
+    
+    let iconImages = [
+      UIImage(named: "blue_like"),
+      UIImage(named: "red_heart"),
+      UIImage(named: "surprised"),
+      UIImage(named: "cry_laugh"),
+      UIImage(named: "cry"),
+      UIImage(named: "angry"),
+    ]
+    
+    let arrangedSubviews = iconImages.map({ image -> UIView in
+      let imageView = UIImageView(image: image)
+      imageView.layer.cornerRadius = iconHeight / 2
+      return imageView
     })
     
     let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
     stackView.distribution = .fillEqually
     
     //configurations
-    let padding: CGFloat = 8
-    let iconHeight: CGFloat = 50
     let numberOfIcons: CGFloat = CGFloat(arrangedSubviews.count)
     let containerViewHeight = iconHeight + 2 * padding
     let containerViewWidth = numberOfIcons * iconHeight + (numberOfIcons + 1) * padding
@@ -42,6 +52,14 @@ class ViewController: UIViewController {
     containerView.addSubview(stackView)
     
     containerView.frame = CGRect(x: 0, y: 0, width: containerViewWidth, height: containerViewHeight)
+    
+    //layer
+    containerView.layer.cornerRadius = containerViewHeight / 2
+    containerView.layer.shadowColor = UIColor(white: 0.4, alpha: 0.4).cgColor
+    containerView.layer.shadowRadius = 8
+    containerView.layer.shadowOpacity = 0.5
+    containerView.layer.shadowOffset = CGSize(width: 0, height: 4)
+    
     stackView.frame = containerView.frame
     return containerView
   }()
